@@ -1,18 +1,16 @@
-public class KnifeStore {
+public abstract class KnifeStore {
 
-    private final KnifeFactory factory;
-    // require a KnifeFactory object to be passed
-    // to this constructor:
-    public KnifeStore(KnifeFactory factory) {
-        this.factory = factory;
-    }
     public Knife orderKnife(String knifeType) {
-        Knife knife;
-        //use the create method in the factory
-        knife = factory.createKnife(knifeType);
-        //prepare the Knife
-        knife.sharpen();
-        knife.polish();
-        return knife;
+        Knife knife = createKnife(knifeType); // Create the knife using the subclass's implementation
+        if (knife != null) { // Check if knife creation was successful
+            knife.sharpen();
+            knife.polish();
+            knife.packageKnife(); // Use the corrected method name
+            return knife;
+        } else {
+            throw new IllegalArgumentException("Invalid knife type: " + knifeType);
+        }
     }
+
+    abstract Knife createKnife(String type);
 }
